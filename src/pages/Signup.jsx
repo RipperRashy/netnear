@@ -1,14 +1,47 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { supabase } from '../supabase'
 
 function Signup() {
   const [role, setRole] = useState('customer')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+
+  const handleSignup = async () => {
+    setLoading(true)
+    setError('')
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+          role,
+        }
+      }
+    })
+
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+    } else {
+      navigate('/login')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 w-full max-w-md p-8">
 
-        {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="white" strokeWidth="2">
@@ -24,7 +57,6 @@ function Signup() {
         <h1 className="text-2xl font-bold text-gray-900 mb-1">Create your account</h1>
         <p className="text-gray-500 text-sm mb-6">Join NetNear — Kenya's WiFi installer network</p>
 
-        {/* Role toggle */}
         <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
           <button
             onClick={() => setRole('customer')}
@@ -40,6 +72,8 @@ function Signup() {
           </button>
         </div>
 
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -47,6 +81,8 @@ function Signup() {
               <input
                 type="text"
                 placeholder="John"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
               />
             </div>
@@ -55,6 +91,8 @@ function Signup() {
               <input
                 type="text"
                 placeholder="Doe"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
               />
             </div>
@@ -64,6 +102,8 @@ function Signup() {
             <input
               type="email"
               placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
             />
           </div>
@@ -72,6 +112,8 @@ function Signup() {
             <input
               type="tel"
               placeholder="+254 7XX XXX XXX"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
             />
           </div>
@@ -80,11 +122,17 @@ function Signup() {
             <input
               type="password"
               placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
             />
           </div>
-          <button className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition">
-            {role === 'customer' ? 'Find an installer' : 'Start getting jobs'}
+          <button
+            onClick={handleSignup}
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition disabled:opacity-50"
+          >
+            {loading ? 'Creating account...' : role === 'customer' ? 'Find an installer' : 'Start getting jobs'}
           </button>
         </div>
 

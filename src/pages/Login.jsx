@@ -1,11 +1,32 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { supabase } from '../supabase'
 
 function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+
+  const handleLogin = async () => {
+    setLoading(true)
+    setError('')
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+    } else {
+      navigate('/')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 w-full max-w-md p-8">
-        
-        {/* Logo */}
+
         <div className="flex items-center gap-2 mb-8">
           <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="white" strokeWidth="2">
@@ -21,12 +42,16 @@ function Login() {
         <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome back</h1>
         <p className="text-gray-500 text-sm mb-8">Log in to your NetNear account</p>
 
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1">Email address</label>
             <input
               type="email"
               placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
             />
           </div>
@@ -35,6 +60,8 @@ function Login() {
             <input
               type="password"
               placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-green-500 transition"
             />
           </div>
@@ -45,8 +72,12 @@ function Login() {
             </label>
             <a href="#" className="text-sm text-green-600 hover:underline">Forgot password?</a>
           </div>
-          <button className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition">
-            Log in
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition disabled:opacity-50"
+          >
+            {loading ? 'Logging in...' : 'Log in'}
           </button>
         </div>
 
