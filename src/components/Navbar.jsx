@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom'
+
 function Navbar() {
   return (
     <nav className="flex items-center justify-between px-8 py-4 bg-white shadow-sm">
-      <div className="flex items-center gap-3">
+      <Link to="/" className="flex items-center gap-3">
         <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
           <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="white" strokeWidth="2">
             <path strokeLinecap="round" d="M5 12.5a10 10 0 0 1 14 0"/>
@@ -14,7 +16,7 @@ function Navbar() {
           <span className="text-green-600">Net</span>
           <span className="text-gray-800">Near</span>
         </span>
-      </div>
+      </Link>
       <div className="hidden md:flex gap-8 text-sm text-gray-600">
         <a href="#" className="hover:text-green-600">Find Installer</a>
         <a href="#" className="hover:text-green-600">For Installers</a>
@@ -22,8 +24,8 @@ function Navbar() {
         <a href="#" className="hover:text-green-600">Pricing</a>
       </div>
       <div className="flex gap-3">
-        <button className="text-sm text-gray-600 hover:text-green-600">Log in</button>
-        <button className="text-sm bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">Get started</button>
+        <Link to="/login" className="text-sm text-gray-600 hover:text-green-600 py-2 px-3">Log in</Link>
+        <Link to="/signup" className="text-sm bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">Get started</Link>
       </div>
     </nav>
   )
