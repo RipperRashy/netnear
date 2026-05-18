@@ -6,6 +6,7 @@ import Search from './pages/Search'
 import InstallerSetup from './pages/InstallerSetup'
 import InstallerDashboard from './pages/InstallerDashboard'
 import CustomerDashboard from './pages/CustomerDashboard'
+import InstallerProfile from './pages/InstallerProfile'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/installer/setup" element={<InstallerSetup />} />
       <Route path="/installer/dashboard" element={<InstallerDashboard />} />
       <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+      <Route path="/installer/:id" element={<InstallerProfile />} />
     </Routes>
   )
 }
