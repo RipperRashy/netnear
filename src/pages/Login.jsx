@@ -26,7 +26,17 @@ function Login() {
   .single()
 
 if (profile?.role === 'installer') {
-  navigate('/installer/setup')
+  const { data: installerData } = await supabase
+    .from('installers')
+    .select('id')
+    .eq('id', (await supabase.auth.getUser()).data.user.id)
+    .single()
+
+  if (installerData) {
+    navigate('/installer/dashboard')
+  } else {
+    navigate('/installer/setup')
+  }
 } else {
   navigate('/search')
 }

@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Search from './pages/Search'
 import InstallerSetup from './pages/InstallerSetup'
+import InstallerDashboard from './pages/InstallerDashboard'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/search" element={<Search />} />
       <Route path="/installer/setup" element={<InstallerSetup />} />
+      <Route path="/installer/dashboard" element={<InstallerDashboard />} />
     </Routes>
   )
 }
