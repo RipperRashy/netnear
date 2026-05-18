@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Hero() {
   return (
     <section className="flex flex-col items-center justify-center text-center px-6 py-12 bg-white">
@@ -12,23 +14,29 @@ function Hero() {
         Connect with verified, rated WiFi installation professionals across Kenya. Fast, reliable, and always nearby.
       </p>
       <div className="flex gap-4 mb-12">
-        <button className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700">
-          Find an installer
-        </button>
-        <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-green-600 hover:text-green-600">
-          List your services
-        </button>
+        <Link to="/search">
+          <button className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700">
+            Find an installer
+          </button>
+        </Link>
+        <Link to="/signup">
+          <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-green-600 hover:text-green-600">
+            List your services
+          </button>
+        </Link>
       </div>
       <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 w-full max-w-xl gap-3">
-        <span className="text-gray-400 text-sm">📍</span>
+        <span className="text-gray-400">📍</span>
         <input
           type="text"
           placeholder="Enter your town — e.g. Westlands, Kisumu, Eldoret..."
           className="flex-1 bg-transparent text-sm text-gray-600 outline-none"
         />
-        <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700">
-          Search
-        </button>
+        <Link to="/search">
+          <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700">
+            Search
+          </button>
+        </Link>
       </div>
     </section>
   )

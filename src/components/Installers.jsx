@@ -1,8 +1,10 @@
+import { Link } from 'react-router-dom'
+
 function Installers() {
   const installers = [
-    { initials: "JM", name: "James Mwangi", location: "Nairobi, 2.1 km", rating: "★★★★★", tags: ["Fibre", "Home WiFi"], available: "Available today", color: "bg-green-100 text-green-700" },
-    { initials: "AO", name: "Amina Omar", location: "Westlands, 3.8 km", rating: "★★★★★", tags: ["Business", "CCTV"], available: "Available tomorrow", color: "bg-blue-100 text-blue-700" },
-    { initials: "PK", name: "Peter Kamau", location: "Kasarani, 5.2 km", rating: "★★★★☆", tags: ["Fibre", "Routers"], available: "Available today", color: "bg-yellow-100 text-yellow-700" },
+    { id: 1, initials: "JM", name: "James Mwangi", location: "Nairobi, 2.1 km", rating: "★★★★★", tags: ["Fibre", "Home WiFi"], available: "Available today", color: "bg-green-100 text-green-700" },
+    { id: 2, initials: "AO", name: "Amina Omar", location: "Westlands, 3.8 km", rating: "★★★★★", tags: ["Business", "CCTV"], available: "Available tomorrow", color: "bg-blue-100 text-blue-700" },
+    { id: 3, initials: "PK", name: "Peter Kamau", location: "Kasarani, 5.2 km", rating: "★★★★☆", tags: ["Fibre", "Routers"], available: "Available today", color: "bg-yellow-100 text-yellow-700" },
   ]
 
   return (
@@ -24,14 +26,22 @@ function Installers() {
                 <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">{tag}</span>
               ))}
             </div>
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{installer.available}</span>
+            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full block mb-3">{installer.available}</span>
+            <div className="flex gap-2">
+              <Link to={`/installer/${installer.id}`} className="flex-1">
+                <button className="w-full text-xs border border-gray-200 text-gray-600 py-1.5 rounded-lg hover:border-green-500 hover:text-green-600 transition">View</button>
+              </Link>
+              <Link to={`/booking/${installer.id}`} className="flex-1">
+                <button className="w-full text-xs bg-green-600 text-white py-1.5 rounded-lg hover:bg-green-700 transition">Book</button>
+              </Link>
+            </div>
           </div>
         ))}
-        <div className="border-2 border-dashed border-gray-200 rounded-xl p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:border-green-400 transition">
+        <Link to="/signup" className="border-2 border-dashed border-gray-200 rounded-xl p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:border-green-400 transition">
           <div className="text-3xl text-gray-300 mb-2">+</div>
           <div className="text-sm font-medium text-gray-600">Are you an installer?</div>
           <div className="text-xs text-gray-400 mt-1">List your profile free →</div>
-        </div>
+        </Link>
       </div>
     </section>
   )

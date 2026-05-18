@@ -18,10 +18,10 @@ function Navbar() {
         </span>
       </Link>
       <div className="hidden md:flex gap-8 text-sm text-gray-600">
-        <a href="#" className="hover:text-green-600">Find Installer</a>
-        <a href="#" className="hover:text-green-600">For Installers</a>
-        <a href="#" className="hover:text-green-600">How it works</a>
-        <a href="#" className="hover:text-green-600">Pricing</a>
+        <Link to="/search" className="hover:text-green-600">Find Installer</Link>
+        <Link to="/signup" className="hover:text-green-600">For Installers</Link>
+        <a href="#how-it-works" className="hover:text-green-600">How it works</a>
+        <a href="#pricing" className="hover:text-green-600">Pricing</a>
       </div>
       <div className="flex gap-3">
         <Link to="/login" className="text-sm text-gray-600 hover:text-green-600 py-2 px-3">Log in</Link>

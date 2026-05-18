@@ -1,5 +1,5 @@
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 
 function InstallerDashboard() {
@@ -13,9 +13,8 @@ function InstallerDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
       <nav className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="white" strokeWidth="2">
               <path strokeLinecap="round" d="M5 12.5a10 10 0 0 1 14 0"/>
@@ -25,7 +24,7 @@ function InstallerDashboard() {
             </svg>
           </div>
           <span className="font-bold text-lg"><span className="text-green-600">Net</span>Near</span>
-        </div>
+        </Link>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-green-50 border border-green-100 px-4 py-2 rounded-full">
             <div className="w-2 h-2 bg-green-500 rounded-full"/>
@@ -36,7 +35,6 @@ function InstallerDashboard() {
         </div>
       </nav>
 
-      {/* Hero banner */}
       <div className="bg-green-600 px-8 py-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-6">
           <div>
@@ -44,25 +42,28 @@ function InstallerDashboard() {
             <p className="text-green-100">Here's what's happening with your NetNear profile today.</p>
           </div>
           <div className="flex gap-3">
-            <button className="bg-white text-green-600 font-medium px-5 py-2.5 rounded-xl hover:bg-green-50 transition text-sm">
-              👤 View my profile
-            </button>
-            <button className="bg-green-700 text-white font-medium px-5 py-2.5 rounded-xl hover:bg-green-800 transition text-sm">
-              ✏️ Edit profile
-            </button>
+            <Link to="/installer/1">
+              <button className="bg-white text-green-600 font-medium px-5 py-2.5 rounded-xl hover:bg-green-50 transition text-sm">
+                👤 View my profile
+              </button>
+            </Link>
+            <Link to="/installer/setup">
+              <button className="bg-green-700 text-white font-medium px-5 py-2.5 rounded-xl hover:bg-green-800 transition text-sm">
+                ✏️ Edit profile
+              </button>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Stats bar */}
       <div className="bg-white border-b border-gray-200 px-8 py-4">
         <div className="max-w-7xl mx-auto grid grid-cols-5 gap-6">
           {[
-            { icon: '🔧', label: 'Total jobs', value: '0', change: 'Start getting bookings!' },
-            { icon: '✅', label: 'Completed', value: '0', change: 'Jobs completed' },
-            { icon: '⏳', label: 'Pending', value: '0', change: 'Awaiting confirmation' },
-            { icon: '⭐', label: 'Your rating', value: 'N/A', change: 'Complete jobs to get rated' },
-            { icon: '💰', label: 'Total earned', value: 'KES 0', change: 'Lifetime earnings' },
+            { icon: '🔧', label: 'Total jobs', value: '0' },
+            { icon: '✅', label: 'Completed', value: '0' },
+            { icon: '⏳', label: 'Pending', value: '0' },
+            { icon: '⭐', label: 'Your rating', value: 'N/A' },
+            { icon: '💰', label: 'Total earned', value: 'KES 0' },
           ].map(stat => (
             <div key={stat.label} className="flex items-center gap-3">
               <span className="text-2xl">{stat.icon}</span>
@@ -77,11 +78,7 @@ function InstallerDashboard() {
 
       <div className="max-w-7xl mx-auto px-8 py-8">
         <div className="grid grid-cols-3 gap-6">
-
-          {/* Jobs panel */}
           <div className="col-span-2 space-y-6">
-
-            {/* Job tabs */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-semibold text-gray-900 text-lg">My jobs</h2>
@@ -109,7 +106,6 @@ function InstallerDashboard() {
               </div>
             </div>
 
-            {/* Earnings chart placeholder */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-900 text-lg">Earnings overview</h2>
@@ -125,13 +121,9 @@ function InstallerDashboard() {
                 <p className="text-gray-400 text-xs mt-1">Complete your first job to start tracking</p>
               </div>
             </div>
-
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-4">
-
-            {/* Profile completion */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 mb-2">Profile strength</h2>
               <div className="flex items-center gap-3 mb-3">
@@ -162,30 +154,30 @@ function InstallerDashboard() {
               </div>
             </div>
 
-            {/* Quick actions */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 mb-4">Quick actions</h2>
               <div className="space-y-2">
                 {[
-                  { icon: '📸', label: 'Add portfolio photos', desc: 'Show off your best work' },
-                  { icon: '💳', label: 'Add M-Pesa number', desc: 'To receive payments' },
-                  { icon: '📅', label: 'Set availability', desc: 'Let customers know when you\'re free' },
-                  { icon: '🔔', label: 'Notifications', desc: 'Manage your alerts' },
-                  { icon: '📊', label: 'View analytics', desc: 'See your profile performance' },
+                  { icon: '📸', label: 'Add portfolio photos', desc: 'Show off your best work', link: '/installer/setup' },
+                  { icon: '💳', label: 'Add M-Pesa number', desc: 'To receive payments', link: '/installer/setup' },
+                  { icon: '📅', label: 'Set availability', desc: 'Let customers know when you\'re free', link: '/installer/setup' },
+                  { icon: '🔔', label: 'Notifications', desc: 'Manage your alerts', link: '#' },
+                  { icon: '📊', label: 'View analytics', desc: 'See your profile performance', link: '#' },
                 ].map(action => (
-                  <button key={action.label} className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-green-50 transition text-left group">
-                    <span className="text-xl">{action.icon}</span>
-                    <div>
-                      <div className="text-sm font-medium text-gray-800 group-hover:text-green-600 transition">{action.label}</div>
-                      <div className="text-xs text-gray-400">{action.desc}</div>
-                    </div>
-                    <span className="ml-auto text-gray-300 group-hover:text-green-400">→</span>
-                  </button>
+                  <Link to={action.link} key={action.label}>
+                    <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-green-50 transition text-left group">
+                      <span className="text-xl">{action.icon}</span>
+                      <div>
+                        <div className="text-sm font-medium text-gray-800 group-hover:text-green-600 transition">{action.label}</div>
+                        <div className="text-xs text-gray-400">{action.desc}</div>
+                      </div>
+                      <span className="ml-auto text-gray-300 group-hover:text-green-400">→</span>
+                    </button>
+                  </Link>
                 ))}
               </div>
             </div>
 
-            {/* Availability toggle */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 mb-1">Availability</h2>
               <p className="text-xs text-gray-400 mb-4">Turn off when you're not taking new jobs</p>
@@ -199,7 +191,6 @@ function InstallerDashboard() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>

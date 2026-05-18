@@ -6,7 +6,6 @@ function InstallerProfile() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Hero banner */}
       <div className="bg-green-600 px-8 py-10">
         <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-6">
           <div className="flex items-center gap-6">
@@ -37,14 +36,15 @@ function InstallerProfile() {
                 Book now 🚀
               </button>
             </Link>
-            <button className="border-2 border-white text-white font-semibold px-6 py-3 rounded-xl hover:bg-green-700 transition">
-              💬 Message
-            </button>
+            <Link to="/login">
+              <button className="border-2 border-white text-white font-semibold px-6 py-3 rounded-xl hover:bg-green-700 transition">
+                💬 Message
+              </button>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Quick stats bar */}
       <div className="bg-white border-b border-gray-200 px-8 py-4">
         <div className="max-w-7xl mx-auto grid grid-cols-5 gap-4">
           {[
@@ -69,7 +69,6 @@ function InstallerProfile() {
         <div className="grid grid-cols-3 gap-8">
           <div className="col-span-2 space-y-6">
 
-            {/* About */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 text-lg mb-4">About James</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
@@ -92,7 +91,6 @@ function InstallerProfile() {
               </div>
             </div>
 
-            {/* Services */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 text-lg mb-4">Services & pricing</h2>
               <div className="space-y-3">
@@ -117,7 +115,6 @@ function InstallerProfile() {
               </div>
             </div>
 
-            {/* Reviews */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-semibold text-gray-900 text-lg">Customer reviews</h2>
@@ -127,8 +124,6 @@ function InstallerProfile() {
                   <span className="text-sm text-gray-400">/ 5 · 42 reviews</span>
                 </div>
               </div>
-
-              {/* Rating breakdown */}
               <div className="space-y-2 mb-6">
                 {[
                   { stars: 5, count: 38, percent: 90 },
@@ -146,11 +141,10 @@ function InstallerProfile() {
                   </div>
                 ))}
               </div>
-
               <div className="space-y-5">
                 {[
                   { name: 'Sarah K.', avatar: 'SK', rating: 5, comment: 'James was fantastic! Arrived on time, set everything up perfectly and even showed me how to manage my router settings. My WiFi has never been this fast. Will definitely book again!', date: '2 days ago', service: 'Fibre Installation' },
-                  { name: 'David M.', avatar: 'DM', rating: 5, comment: 'Very professional and fast. My fibre was up and running within an hour. He also tidied up all the cables which I wasn\'t even expecting. 10/10!', date: '1 week ago', service: 'Home WiFi Setup' },
+                  { name: 'David M.', avatar: 'DM', rating: 5, comment: "Very professional and fast. My fibre was up and running within an hour. He also tidied up all the cables which I wasn't even expecting. 10/10!", date: '1 week ago', service: 'Home WiFi Setup' },
                   { name: 'Amina O.', avatar: 'AO', rating: 4, comment: 'Good work overall. Came on time and was very knowledgeable. Slight delay but communicated well throughout. Happy with the end result.', date: '2 weeks ago', service: 'Router Configuration' },
                 ].map(review => (
                   <div key={review.name} className="border border-gray-100 rounded-xl p-4">
@@ -172,13 +166,9 @@ function InstallerProfile() {
                 ))}
               </div>
             </div>
-
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-4">
-
-            {/* Book card */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 sticky top-6">
               <div className="text-center mb-4">
                 <div className="text-3xl font-bold text-green-600">KES 1,500</div>
@@ -189,9 +179,11 @@ function InstallerProfile() {
                   Book now 🚀
                 </button>
               </Link>
-              <button className="w-full border border-gray-200 text-gray-600 py-3 rounded-xl font-medium hover:border-green-500 hover:text-green-600 transition mb-4">
-                💬 Send a message
-              </button>
+              <Link to="/login">
+                <button className="w-full border border-gray-200 text-gray-600 py-3 rounded-xl font-medium hover:border-green-500 hover:text-green-600 transition mb-4">
+                  💬 Send a message
+                </button>
+              </Link>
               <div className="space-y-2 text-sm">
                 {[
                   { icon: '✅', text: 'Free cancellation up to 2hrs before' },
@@ -207,7 +199,6 @@ function InstallerProfile() {
               </div>
             </div>
 
-            {/* Availability */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 mb-4">Availability this week</h2>
               <div className="space-y-2">
@@ -228,7 +219,6 @@ function InstallerProfile() {
               </div>
             </div>
 
-            {/* ISP partners */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="font-semibold text-gray-900 mb-3">Works with</h2>
               <div className="flex flex-wrap gap-2">
@@ -239,7 +229,6 @@ function InstallerProfile() {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </div>
