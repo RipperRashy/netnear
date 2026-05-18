@@ -38,7 +38,7 @@ if (profile?.role === 'installer') {
     navigate('/installer/setup')
   }
 } else {
-  navigate('/search')
+  navigate('/customer/dashboard')
 }
     }
   }
