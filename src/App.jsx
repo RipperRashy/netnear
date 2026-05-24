@@ -8,6 +8,11 @@ import InstallerDashboard from './pages/InstallerDashboard'
 import CustomerDashboard from './pages/CustomerDashboard'
 import InstallerProfile from './pages/InstallerProfile'
 import Booking from './pages/Booking'
+import Pricing from './pages/Pricing'
+import ForInstallers from './pages/ForInstallers'
+import HowItWorks from './pages/HowItWorks'
+import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   return (
@@ -16,11 +21,15 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/search" element={<Search />} />
-      <Route path="/installer/setup" element={<InstallerSetup />} />
-      <Route path="/installer/dashboard" element={<InstallerDashboard />} />
-      <Route path="/customer/dashboard" element={<CustomerDashboard />} />
       <Route path="/installer/:id" element={<InstallerProfile />} />
-      <Route path="/booking/:id" element={<Booking />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/for-installers" element={<ForInstallers />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
+      <Route path="/booking/:id" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+      <Route path="/installer/setup" element={<ProtectedRoute><InstallerSetup /></ProtectedRoute>} />
+      <Route path="/installer/dashboard" element={<ProtectedRoute><InstallerDashboard /></ProtectedRoute>} />
+      <Route path="/customer/dashboard" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

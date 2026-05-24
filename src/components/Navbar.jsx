@@ -19,9 +19,9 @@ function Navbar() {
       </Link>
       <div className="hidden md:flex gap-8 text-sm text-gray-600">
         <Link to="/search" className="hover:text-green-600">Find Installer</Link>
-        <Link to="/signup" className="hover:text-green-600">For Installers</Link>
-        <a href="#how-it-works" className="hover:text-green-600">How it works</a>
-        <a href="#pricing" className="hover:text-green-600">Pricing</a>
+        <Link to="/for-installers" className="hover:text-green-600">For Installers</Link>
+        <Link to="/how-it-works" className="hover:text-green-600">How it works</Link>
+        <Link to="/pricing" className="hover:text-green-600">Pricing</Link>
       </div>
       <div className="flex gap-3">
         <Link to="/login" className="text-sm text-gray-600 hover:text-green-600 py-2 px-3">Log in</Link>

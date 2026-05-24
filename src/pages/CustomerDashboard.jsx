@@ -1,6 +1,7 @@
 import { useAuth } from '../context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../supabase'
+import { installers } from '../data/installers'
 
 function CustomerDashboard() {
   const { profile } = useAuth()
@@ -115,12 +116,8 @@ function CustomerDashboard() {
                 <Link to="/search" className="text-sm text-green-600 hover:underline">View all →</Link>
               </div>
               <div className="space-y-3">
-                {[
-                  { id: 1, initials: 'JM', name: 'James Mwangi', location: 'Westlands, Nairobi', rating: '4.9', reviews: 42, price: 'KES 1,500', available: true, color: 'bg-green-100 text-green-700' },
-                  { id: 2, initials: 'SM', name: 'Sarah Mutua', location: 'Kilimani, Nairobi', rating: '5.0', reviews: 55, price: 'KES 1,800', available: true, color: 'bg-purple-100 text-purple-700' },
-                  { id: 3, initials: 'AO', name: 'Amina Omar', location: 'Kasarani, Nairobi', rating: '4.8', reviews: 38, price: 'KES 2,000', available: true, color: 'bg-blue-100 text-blue-700' },
-                ].map(installer => (
-                  <div key={installer.name} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-green-50 transition group">
+                {installers.slice(0, 3).map(installer => (
+                  <div key={installer.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-green-50 transition group">
                     <div className="flex items-center gap-3">
                       <div className={`w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm ${installer.color}`}>
                         {installer.initials}
@@ -133,9 +130,9 @@ function CustomerDashboard() {
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <div className="text-sm font-bold text-gray-900">{installer.price}</div>
-                        <div className={`text-xs ${installer.available ? 'text-green-600' : 'text-yellow-600'}`}>
-                          {installer.available ? '🟢 Available today' : '🟡 Tomorrow'}
+                        <div className="text-sm font-bold text-gray-900">KES {installer.priceFrom.toLocaleString()}</div>
+                        <div className={`text-xs ${installer.available === 'Available today' ? 'text-green-600' : 'text-yellow-600'}`}>
+                          {installer.available === 'Available today' ? '🟢 Available today' : '🟡 Tomorrow'}
                         </div>
                       </div>
                       <Link to={`/booking/${installer.id}`}>
@@ -157,9 +154,9 @@ function CustomerDashboard() {
                 {[
                   { icon: '🔍', label: 'Find an installer', desc: 'Search by location or service', link: '/search' },
                   { icon: '📋', label: 'My bookings', desc: 'View all your jobs', link: '/customer/dashboard' },
-                  { icon: '⭐', label: 'My reviews', desc: 'Reviews you have left', link: '#' },
-                  { icon: '👤', label: 'My profile', desc: 'Update your details', link: '#' },
-                  { icon: '🔔', label: 'Notifications', desc: 'Manage your alerts', link: '#' },
+                  { icon: '⭐', label: 'My reviews', desc: 'Reviews you have left', link: '/customer/reviews' },
+                  { icon: '👤', label: 'My profile', desc: 'Update your details', link: '/customer/profile' },
+                  { icon: '🔔', label: 'Notifications', desc: 'Manage your alerts', link: '/notifications' },
                 ].map(action => (
                   <Link to={action.link} key={action.label}>
                     <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-green-50 transition text-left group">
@@ -182,7 +179,7 @@ function CustomerDashboard() {
                   { icon: '🔍', title: 'Search nearby', desc: 'Find verified installers in your area' },
                   { icon: '📅', title: 'Book instantly', desc: 'Pick a date and time that works for you' },
                   { icon: '🔧', title: 'Get connected', desc: 'Your installer comes and sets everything up' },
-                  { icon: '💳', title: 'Pay securely', desc: 'Pay via M-Pesa only after you\'re happy' },
+                  { icon: '💳', title: 'Pay securely', desc: "Pay via M-Pesa only after you're happy" },
                 ].map(step => (
                   <div key={step.title} className="flex gap-3">
                     <span className="text-xl">{step.icon}</span>
