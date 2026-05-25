@@ -45,12 +45,12 @@ function Booking() {
     )
   }
 
-  const handleBooking = async () => {
+ const handleBooking = async () => {
     if (!user) { navigate('/login'); return }
     setLoading(true)
     setError('')
     const fullLocation = `${streetAddress}, ${town}, ${county}${landmark ? ` (Near ${landmark})` : ''}`
-    const fullDescription = `Services: ${selectedServices.join(', ')}${description ? `. Additional details: ${description}` : ''}`
+    const fullDescription = `Installer: ${installer.name} | Date: ${date} | Time: ${time} | Services: ${selectedServices.join(', ')}${description ? ` | Details: ${description}` : ''}`
     const { error } = await supabase.from('jobs').insert({
       customer_id: user.id,
       installer_id: user.id,

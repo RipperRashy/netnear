@@ -2,15 +2,60 @@ import { useAuth } from '../context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { installers } from '../data/installers'
+import { useEffect, useState } from 'react'
 
 function CustomerDashboard() {
-  const { profile } = useAuth()
+  const { profile, user } = useAuth()
   const navigate = useNavigate()
+  const [jobs, setJobs] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('All')
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
     navigate('/')
   }
+
+  useEffect(() => {
+    if (user) fetchJobs()
+  }, [user])
+
+  const fetchJobs = async () => {
+    const { data, error } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('customer_id', user.id)
+      .order('created_at', { ascending: false })
+    if (!error) setJobs(data)
+    setLoading(false)
+  }
+
+  const filteredJobs = jobs.filter(job => {
+    if (activeTab === 'All') return true
+    return job.status.toLowerCase() === activeTab.toLowerCase()
+  })
+
+  const getStatusColor = (status) => {
+    if (status === 'pending') return 'bg-yellow-100 text-yellow-700'
+    if (status === 'confirmed') return 'bg-blue-100 text-blue-700'
+    if (status === 'in_progress') return 'bg-purple-100 text-purple-700'
+    if (status === 'completed') return 'bg-green-100 text-green-700'
+    if (status === 'cancelled') return 'bg-red-100 text-red-700'
+    return 'bg-gray-100 text-gray-700'
+  }
+
+  const getStatusIcon = (status) => {
+    if (status === 'pending') return '⏳'
+    if (status === 'confirmed') return '✅'
+    if (status === 'in_progress') return '🔧'
+    if (status === 'completed') return '🎉'
+    if (status === 'cancelled') return '❌'
+    return '📋'
+  }
+
+  const totalJobs = jobs.length
+  const completedJobs = jobs.filter(j => j.status === 'completed').length
+  const pendingJobs = jobs.filter(j => j.status === 'pending').length
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -43,11 +88,6 @@ function CustomerDashboard() {
                   🔍 Find an installer
                 </button>
               </Link>
-              <Link to="/customer/dashboard">
-                <button className="bg-green-700 text-white font-medium px-5 py-2.5 rounded-xl hover:bg-green-800 transition text-sm">
-                  📋 My bookings
-                </button>
-              </Link>
             </div>
           </div>
           <div className="bg-white rounded-2xl p-5 min-w-64">
@@ -68,9 +108,9 @@ function CustomerDashboard() {
       <div className="bg-white border-b border-gray-200 px-8 py-4">
         <div className="max-w-7xl mx-auto grid grid-cols-4 gap-6">
           {[
-            { icon: '📋', label: 'Total bookings', value: '0' },
-            { icon: '✅', label: 'Completed jobs', value: '0' },
-            { icon: '⏳', label: 'Pending jobs', value: '0' },
+            { icon: '📋', label: 'Total bookings', value: totalJobs },
+            { icon: '✅', label: 'Completed jobs', value: completedJobs },
+            { icon: '⏳', label: 'Pending jobs', value: pendingJobs },
             { icon: '⭐', label: 'Reviews given', value: '0' },
           ].map(stat => (
             <div key={stat.label} className="flex items-center gap-3">
@@ -87,29 +127,94 @@ function CustomerDashboard() {
       <div className="max-w-7xl mx-auto px-8 py-8">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-2 space-y-6">
+
+            {/* Bookings */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-semibold text-gray-900 text-lg">My bookings</h2>
                 <div className="flex gap-2">
-                  {['All', 'Pending', 'Confirmed', 'Completed'].map(tab => (
-                    <button key={tab} className={`text-xs px-3 py-1.5 rounded-full border transition ${tab === 'All' ? 'bg-green-600 text-white border-green-600' : 'border-gray-200 text-gray-500 hover:border-green-400'}`}>
+                  {['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled'].map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`text-xs px-3 py-1.5 rounded-full border transition ${activeTab === tab ? 'bg-green-600 text-white border-green-600' : 'border-gray-200 text-gray-500 hover:border-green-400'}`}
+                    >
                       {tab}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-center py-16 text-center">
-                <span className="text-6xl mb-4">📭</span>
-                <h3 className="font-semibold text-gray-900 mb-1">No bookings yet</h3>
-                <p className="text-gray-500 text-sm mb-6">Find a nearby installer and book your first job today!</p>
-                <Link to="/search">
-                  <button className="bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition">
-                    Browse installers 🔍
-                  </button>
-                </Link>
-              </div>
+
+              {loading ? (
+                <div className="flex items-center justify-center py-16">
+                  <div className="text-center">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
+                      <span className="text-green-600">⏳</span>
+                    </div>
+                    <p className="text-gray-400 text-sm">Loading your bookings...</p>
+                  </div>
+                </div>
+              ) : filteredJobs.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <span className="text-6xl mb-4">📭</span>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    {activeTab === 'All' ? 'No bookings yet' : `No ${activeTab.toLowerCase()} bookings`}
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-6">
+                    {activeTab === 'All' ? 'Find a nearby installer and book your first job today!' : 'No bookings with this status yet.'}
+                  </p>
+                  {activeTab === 'All' && (
+                    <Link to="/search">
+                      <button className="bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition">
+                        Browse installers 🔍
+                      </button>
+                    </Link>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {filteredJobs.map(job => (
+                    <div key={job.id} className="border border-gray-200 rounded-xl p-5 hover:border-green-300 transition">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center font-bold text-green-700 text-sm">
+                            {job.installer_initials || 'IN'}
+                          </div>
+                          <div>
+                            <div className="font-semibold text-gray-900">{job.installer_name || 'Installer'}</div>
+                            <div className="text-xs text-gray-400">📅 {job.preferred_date || 'Date TBD'} · {job.preferred_time || 'Time TBD'}</div>
+                            <div className="text-xs text-gray-400">📍 {job.location}</div>
+                          </div>
+                        </div>
+                        <span className={`text-xs px-3 py-1 rounded-full font-medium ${getStatusColor(job.status)}`}>
+                          {getStatusIcon(job.status)} {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                        </span>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg px-4 py-2 text-xs text-gray-600 mb-3">
+                        {job.description}
+                      </div>
+                      <div className="flex gap-2">
+                        {job.status === 'pending' && (
+                          <button className="text-xs border border-red-200 text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 transition">
+                            Cancel booking
+                          </button>
+                        )}
+                        {job.status === 'completed' && (
+                          <button className="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition">
+                            ⭐ Leave a review
+                          </button>
+                        )}
+                        <button className="text-xs border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:border-green-400 transition">
+                          💬 Message installer
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
+            {/* Recommended installers */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-900 text-lg">Top installers near you</h2>
@@ -154,7 +259,6 @@ function CustomerDashboard() {
                 {[
                   { icon: '🔍', label: 'Find an installer', desc: 'Search by location or service', link: '/search' },
                   { icon: '📋', label: 'My bookings', desc: 'View all your jobs', link: '/customer/dashboard' },
-                  { icon: '⭐', label: 'My reviews', desc: 'Reviews you have left', link: '/customer/reviews' },
                   { icon: '👤', label: 'My profile', desc: 'Update your details', link: '/customer/profile' },
                   { icon: '🔔', label: 'Notifications', desc: 'Manage your alerts', link: '/notifications' },
                 ].map(action => (
