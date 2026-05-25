@@ -30,6 +30,15 @@ function CustomerDashboard() {
     setLoading(false)
   }
 
+  const cancelJob = async (jobId) => {
+    const { error } = await supabase
+      .from('jobs')
+      .update({ status: 'cancelled' })
+      .eq('id', jobId)
+      .eq('customer_id', user.id)
+    if (!error) fetchJobs()
+  }
+
   const filteredJobs = jobs.filter(job => {
     if (activeTab === 'All') return true
     return job.status.toLowerCase() === activeTab.toLowerCase()
@@ -128,7 +137,6 @@ function CustomerDashboard() {
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-2 space-y-6">
 
-            {/* Bookings */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-semibold text-gray-900 text-lg">My bookings</h2>
@@ -193,20 +201,27 @@ function CustomerDashboard() {
                       <div className="bg-gray-50 rounded-lg px-4 py-2 text-xs text-gray-600 mb-3">
                         {job.description}
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
                         {job.status === 'pending' && (
-                          <button className="text-xs border border-red-200 text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 transition">
-                            Cancel booking
+                          <button
+                            onClick={() => cancelJob(job.id)}
+                            className="text-xs border border-red-200 text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 transition"
+                          >
+                            ❌ Cancel booking
                           </button>
                         )}
                         {job.status === 'completed' && (
-                          <button className="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition">
-                            ⭐ Leave a review
-                          </button>
+                          <Link to={`/review/${job.id}`}>
+                            <button className="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition">
+                              ⭐ Leave a review
+                            </button>
+                          </Link>
                         )}
-                        <button className="text-xs border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:border-green-400 transition">
-                          💬 Message installer
-                        </button>
+                        <Link to="/chat">
+                          <button className="text-xs border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:border-green-400 transition">
+                            💬 Message installer
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   ))}
@@ -214,7 +229,6 @@ function CustomerDashboard() {
               )}
             </div>
 
-            {/* Recommended installers */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-900 text-lg">Top installers near you</h2>

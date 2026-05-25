@@ -12,6 +12,10 @@ import Pricing from './pages/Pricing'
 import ForInstallers from './pages/ForInstallers'
 import HowItWorks from './pages/HowItWorks'
 import NotFound from './pages/NotFound'
+import Chat from './pages/Chat'
+import Review from './pages/Review'
+import CustomerProfile from './pages/CustomerProfile'
+import Notifications from './pages/Notifications'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -29,6 +33,10 @@ function App() {
       <Route path="/installer/setup" element={<ProtectedRoute><InstallerSetup /></ProtectedRoute>} />
       <Route path="/installer/dashboard" element={<ProtectedRoute><InstallerDashboard /></ProtectedRoute>} />
       <Route path="/customer/dashboard" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
+      <Route path="/customer/profile" element={<ProtectedRoute><CustomerProfile /></ProtectedRoute>} />
+      <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+      <Route path="/review/:id" element={<ProtectedRoute><Review /></ProtectedRoute>} />
+      <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
