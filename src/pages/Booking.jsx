@@ -1,3 +1,4 @@
+import emailjs from 'emailjs-com'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../supabase'
@@ -51,6 +52,7 @@ function Booking() {
     setError('')
     const fullLocation = `${streetAddress}, ${town}, ${county}${landmark ? ` (Near ${landmark})` : ''}`
     const fullDescription = `Installer: ${installer.name} | Date: ${date} | Time: ${time} | Services: ${selectedServices.join(', ')}${description ? ` | Details: ${description}` : ''}`
+    
     const { error } = await supabase.from('jobs').insert({
       customer_id: user.id,
       installer_id: user.id,
@@ -58,8 +60,32 @@ function Booking() {
       location: fullLocation,
       status: 'pending',
     })
-    if (error) { setError(error.message); setLoading(false) }
-    else navigate('/customer/dashboard')
+
+    if (error) { 
+      setError(error.message)
+      setLoading(false)
+    } else {
+      // Send email notification
+      try {
+        await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          {
+            installer_name: installer.name,
+            installer_email: 'ianmaburi@gmail.com',
+            customer_name: profile?.first_name + ' ' + profile?.last_name,
+            services: selectedServices.join(', '),
+            date: date,
+            time: time,
+            location: fullLocation,
+          },
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        )
+      } catch (emailError) {
+        console.log('Email error:', emailError)
+      }
+      navigate('/customer/dashboard')
+    }
   }
 
   return (
